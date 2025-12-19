@@ -3,7 +3,7 @@ import UserProfile from "./UserInfo";
 function App() {
   return (
     <div>
-      <UserProfile />
+      <UserInfo />
     </div>
   );
 }
