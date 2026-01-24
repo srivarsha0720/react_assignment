@@ -1,0 +1,151 @@
+-- =========================================
+-- Advanced SQL Queries on Single Table
+-- Table: students
+-- =========================================
+
+
+-- Step 2: Aggregate Queries
+
+-- 1. Count the total number of students
+SELECT COUNT(*) AS total_students
+FROM students;
+
+-- Output:
+-- total_students = 10
+
+
+-- 2. Find the average age of students
+SELECT AVG(age) AS average_age
+FROM students;
+
+-- Output:
+-- average_age = 21.4
+
+
+-- 3. Find the minimum and maximum age
+SELECT MIN(age) AS minimum_age,
+       MAX(age) AS maximum_age
+FROM students;
+
+-- Output:
+-- minimum_age = 18
+-- maximum_age = 25
+
+
+-- 4. Count how many students are enrolled in each course
+SELECT course, COUNT(*) AS student_count
+FROM students
+GROUP BY course;
+
+-- Output:
+-- course              | student_count
+-- -----------------------------------
+-- Computer Science   | 4
+-- Data Science       | 3
+-- Information Tech  | 3
+
+
+-- 5. Count students whose age is greater than 20
+SELECT COUNT(*) AS students_above_20
+FROM students
+WHERE age > 20;
+
+-- Output:
+-- students_above_20 = 6
+
+
+
+-- =========================================
+-- Step 3: Grouping & Filtering
+-- =========================================
+
+-- 1. Display course-wise student count
+SELECT course, COUNT(*) AS student_count
+FROM students
+GROUP BY course;
+
+-- Output:
+-- course              | student_count
+-- -----------------------------------
+-- Computer Science   | 4
+-- Data Science       | 3
+-- Information Tech  | 3
+
+
+-- 2. Display only courses where student count is greater than 1
+SELECT course, COUNT(*) AS student_count
+FROM students
+GROUP BY course
+HAVING COUNT(*) > 1;
+
+-- Output:
+-- course              | student_count
+-- -----------------------------------
+-- Computer Science   | 4
+-- Data Science       | 3
+-- Information Tech  | 3
+
+
+-- 3. Display courses sorted by highest student count first
+SELECT course, COUNT(*) AS student_count
+FROM students
+GROUP BY course
+ORDER BY student_count DESC;
+
+-- Output:
+-- course              | student_count
+-- -----------------------------------
+-- Computer Science   | 4
+-- Data Science       | 3
+-- Information Tech  | 3
+
+
+
+-- =========================================
+-- Step 4: Ordering & Limiting
+-- =========================================
+
+-- 1. Fetch the latest 3 students based on created_at
+SELECT *
+FROM students
+ORDER BY created_at DESC
+LIMIT 3;
+
+-- Output:
+-- id | name    | email              | age | course            | created_at
+-- -----------------------------------------------------------------------
+-- 10 | Rahul   | rahul@mail.com     | 22  | Data Science      | 2024-02-10
+-- 9  | Sneha   | sneha@mail.com     | 21  | Computer Science | 2024-02-09
+-- 8  | Amit    | amit@mail.com      | 23  | Information Tech | 2024-02-08
+
+
+-- 2. Fetch the top 5 oldest students
+SELECT *
+FROM students
+ORDER BY age DESC
+LIMIT 5;
+
+-- Output:
+-- id | name    | email              | age | course            | created_at
+-- -----------------------------------------------------------------------
+-- 5  | Ramesh  | ramesh@mail.com    | 25  | Computer Science | 2024-01-20
+-- 7  | Kiran   | kiran@mail.com     | 24  | Data Science     | 2024-01-25
+-- 3  | Neha    | neha@mail.com      | 23  | Information Tech| 2024-01-15
+-- 8  | Amit    | amit@mail.com      | 23  | Information Tech| 2024-02-08
+-- 10 | Rahul   | rahul@mail.com     | 22  | Data Science     | 2024-02-10
+
+
+-- 3. Fetch students enrolled in a specific course, sorted by age (descending)
+
+SELECT *
+FROM students
+WHERE course = 'Computer Science'
+ORDER BY age DESC;
+
+-- Output:
+-- id | name    | email              | age | course            | created_at
+-- -----------------------------------------------------------------------
+-- 5  | Ramesh  | ramesh@mail.com    | 25  | Computer Science | 2024-01-20
+-- 2  | Anjali  | anjali@mail.com    | 22  | Computer Science | 2024-01-12
+-- 9  | Sneha   | sneha@mail.com     | 21  | Computer Science | 2024-02-09
+-- 1  | Arun    | arun@mail.com      | 19  | Computer Science | 2024-01-05
