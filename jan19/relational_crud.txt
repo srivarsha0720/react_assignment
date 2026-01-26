@@ -1,0 +1,69 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    email TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    amount INTEGER,
+    status TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+
+INSERT INTO users (name, email) VALUES
+('Alice', 'alice@gmail.com'),
+('Bob', 'bob@gmail.com'),
+('Charlie', 'charlie@gmail.com'),
+('David', 'david@gmail.com'),
+('Eva', 'eva@gmail.com');
+
+
+INSERT INTO orders (user_id, amount, status) VALUES
+(1, 100, 'placed'),
+(1, 200, 'shipped'),
+(1, 150, 'delivered'),
+(2, 300, 'placed'),
+(2, 120, 'cancelled'),
+(3, 500, 'delivered'),
+(4, 250, 'shipped'),
+(5, 400, 'placed'),
+(3, 180, 'placed');
+
+
+SELECT * FROM users;
+
+SELECT * FROM orders;
+
+SELECT * FROM orders WHERE user_id = 1;
+
+SELECT u.id, u.name, COUNT(o.id) AS total_orders
+FROM users u
+JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name
+HAVING COUNT(o.id) > 1;
+
+
+SELECT u.id, u.name, SUM(o.amount) AS total_amount
+FROM users u
+JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name;
+
+UPDATE users SET email = 'alice_new@gmail.com' WHERE id = 1;
+
+UPDATE orders SET status = 'completed' WHERE user_id = 2;
+
+UPDATE orders SET amount = 999 WHERE id = 2;
+
+DELETE FROM orders WHERE id = 3;
+
+DELETE FROM orders WHERE user_id = 3;
+
+DELETE FROM users WHERE id = 1;
+
+-- Orders should not be stored inside the users table because one user can have many orders.
+-- Separate tables avoid duplication and maintain proper database normalization.
